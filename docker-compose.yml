@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+
+  app:
+    container_name: glr-app
+    restart: always
+    image: php:7.4-apache
+    networks:
+      network:
+        ipv4_address: 172.11.0.2
+    volumes:
+      - .:/app
+    ports:
+      - 80:80
+    working_dir: /app
+    command: php artisan serve --host 172.11.0.2 --port 80
+
+  # Database container
+  db:
+    networks:
+      network:
+        ipv4_address: 172.11.0.3
+    container_name: glr-db
+    image: mysql:5.7
+    command: --disable-partition-engine-check
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=glr_db
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+networks:
+  network:
+    name: glr-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.11.0.0/16
