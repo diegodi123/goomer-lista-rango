@@ -5,7 +5,9 @@ services:
   app:
     container_name: glr-app
     restart: always
-    image: php:7.4-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
     networks:
       network:
         ipv4_address: 172.11.0.2

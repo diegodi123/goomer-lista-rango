@@ -1,0 +1,16 @@
+{
+    "nome": "Lets Eat",
+    "endereco": "Avenida Dom Pedro II",
+    "funcionamento": [
+        {
+            "dias": "Segunda a sexta",
+            "horario_inicial": "11:00",
+            "horario_final": "15:00"
+        },
+        {
+            "dias": "Sabado e domingo",
+            "horario_inicial": "11:00",
+            "horario_final": "20:00"
+        }
+    ]
+}

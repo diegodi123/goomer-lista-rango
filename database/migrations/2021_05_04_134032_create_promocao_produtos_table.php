@@ -17,7 +17,7 @@ class CreatePromocaoProdutosTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_produto');
             $table->foreign('id_produto')->references('id')->on('produtos');
-            $table->string('dias', 100);
+            $table->date('dia');
             $table->string('horario_inicial', 5);
             $table->string('horario_final', 5);
             $table->timestamps();

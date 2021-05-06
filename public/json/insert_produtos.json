@@ -1,0 +1,33 @@
+[
+    {
+        "id_categoria": 3,
+        "id_restaurante": 1,
+        "nome": "Coca-cola 350ml",
+        "preco": 5.00,
+        "is_promocao": false,
+        "descricao_promocao": "",
+        "preco_promocional": "",
+        "promocao": ""
+    },
+    {
+        "id_categoria": 2,
+        "id_restaurante": 1,
+        "nome": "Duplo bacon",
+        "preco": 25.90,
+        "is_promocao": true,
+        "descricao_promocao": "Promoção Duplo bacon por 20,00",
+        "preco_promocional": 20.00,
+        "promocao": [
+            {
+                "dia": "2021-05-06",
+                "horario_inicial": "14:00",
+                "horario_final": "18:00"
+            },
+            {
+                "dia": "2021-05-07",
+                "horario_inicial": "14:00",
+                "horario_final": "18:00"
+            }
+        ]
+    }
+]
