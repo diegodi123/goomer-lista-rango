@@ -10,15 +10,10 @@ git clone https://github.com/bandrade93/goomer-lista-rango.git && cd goomer-list
 ```
 - Instalação de pacotes do composer:
 ```bash
-docker run --rm -v $(pwd):/app composer:latest install
+docker run --rm -v $(pwd):/app composer:latest install --ignore-platform-reqs
 ```
 
-- Instalação das dependencias
-```bash
-composer update
-```
-
-- Subir containers com o docker-compose (esse processo leva em média de 30 a 60 segundos depois do download das imagens)
+- Subir containers com o docker-compose (esse processo leva em média de 30 a 90 segundos depois do download das imagens)
 ```bash
 docker-compose up -d
 ```
@@ -30,12 +25,12 @@ cp .env.example .env
 
 - Criar Laravel key
 ```bash
-php app artisan key:generate
+php artisan key:generate
 ```
 
 - Instalação da base de dados (Depois do container do MySql iniciar):
 ```bash
-php artisan migrate
+php artisan migrate:fresh
 ```
 
 - Gerar dados na tabela de categorias:
@@ -45,12 +40,7 @@ php artisan db:seed
 
 - Instalação PHPUnit
 ```bash
-docker run --rm -it -v $(pwd):/app phpunit/phpunit:latest
-```
-
-- Rodar testes unitários:
-```bash
-./vendor/bin/phpunit
+docker run --rm -it -v $(pwd):/app phpunit/phpunit:latest --testsuit=Feature
 ```
 
 Testes da api feitos pelo Insomnia
