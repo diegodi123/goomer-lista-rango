@@ -8,7 +8,6 @@ use App\Http\DB\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class RestauranteController extends Controller
 {
@@ -22,15 +21,19 @@ class RestauranteController extends Controller
     public function inserir(Request $request)
     {
         if(!$this->validateDadosRestaurante($request)) {
-            return response()->json(['msg' => 'Preencha corretamente todos os dados do restaurante.'], 203);
+            return response()->json(['msg' => 'Preencha corretamente todos os dados do restaurante.'], 403);
         }
 
         if(!$this->validateIntervaloHorario($request)) {
-            return response()->json(['msg' => 'O intervalo entre o horário inicial e o horário final, deve ser no minimo de 15 minutos.'], 203);
+            return response()->json(['msg' => 'O intervalo entre o horário inicial e o horário final, deve ser no minimo de 15 minutos.'], 403);
+        }
+
+        if(!$this->validateImagem($request)) {
+            return response()->json(['msg' => 'Conteúdo vazio ou formato inválido.'], 403);
         }
 
         if(!(new Restaurante())->inserir($request->all())) {
-            return response()->json(['msg' => 'Erro ao salvar registro.'], 203);
+            return response()->json(['msg' => 'Erro ao salvar registro.'], 400);
         }
 
         return response()->json(['msg' => 'Registro salvo com sucesso.'], 201);
@@ -76,6 +79,15 @@ class RestauranteController extends Controller
         return true;
     }
 
+    public function validateImagem(Request $request)
+    {
+        $validator = $request->validate([
+            'foto' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000',
+        ]);
+
+        return true;
+    }
+
     public function horaParaMinutos(string $horario1, string $horario2)
     {
         $horario_inicial = new \DateTime($horario1);
@@ -101,7 +113,7 @@ class RestauranteController extends Controller
         $data = (new Restaurante())->all();
 
         if(count($data) < 1) {
-            return response()->json(['msg' => 'Nenhum registro encontrado.'], 203);
+            return response()->json(['msg' => 'Nenhum registro encontrado.'], 204);
         }
 
         $dados = array();
@@ -129,7 +141,7 @@ class RestauranteController extends Controller
         $data = (new Restaurante())->show($id);
 
         if(count($data) < 1) {
-            return response()->json(['msg' => 'Nenhum registro encontrado.'], 203);
+            return response()->json(['msg' => 'Nenhum registro encontrado.'], 204);
         }
 
         $dados = array();
@@ -156,11 +168,19 @@ class RestauranteController extends Controller
     public function editar(Request $request, int $id)
     {
         if(!$this->validateDadosRestaurante($request)) {
-            return response()->json(['msg' => 'Preencha corretamente todos os dados do restaurante.'], 203);
+            return response()->json(['msg' => 'Preencha corretamente todos os dados do restaurante.'], 403);
+        }
+
+        if(!$this->validateIntervaloHorario($request)) {
+            return response()->json(['msg' => 'O intervalo entre o horário inicial e o horário final, deve ser no minimo de 15 minutos.'], 403);
+        }
+
+        if(!$this->validateImagem($request)) {
+            return response()->json(['msg' => 'Conteúdo vazio ou formato inválido.'], 403);
         }
 
         if(!(new Restaurante())->editar($request->all(), $id)) {
-            return response()->json(['msg' => 'Erro ao alterar registro.'], 203);
+            return response()->json(['msg' => 'Erro ao alterar registro.'], 400);
         }
 
         return response()->json(['msg' => 'Registro alterado com sucesso.'], 201);
@@ -175,7 +195,7 @@ class RestauranteController extends Controller
     public function deletar(int $id)
     {
         if(!(new Restaurante())->remover($id)) {
-            return response()->json(['msg' => 'Erro ao remover registro.'], 203);
+            return response()->json(['msg' => 'Erro ao remover registro.'], 400);
         }
 
         return response()->json(['msg' => 'Registro removido com sucesso.'], 201);

@@ -5,6 +5,7 @@ namespace App\Http\DB;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Restaurante
@@ -33,6 +34,8 @@ class Restaurante
     public function editar(array $input, int $id)
     {
         $dados = json_decode($input['dados']);
+
+        $this->removerUpload($id);
 
         $path = $this->uploadFoto($input['foto']);
 
@@ -92,6 +95,8 @@ class Restaurante
             return false;
         }
 
+        $this->removerUpload($id);
+
         return true;
     }
 
@@ -116,9 +121,11 @@ class Restaurante
         return $path;
     }
 
-    public function removerUpload()
+    public function removerUpload(int $id)
     {
+        $data = $this->show($id);
 
+        Storage::disk('public')->delete($data[0]->foto);
     }
 
 }

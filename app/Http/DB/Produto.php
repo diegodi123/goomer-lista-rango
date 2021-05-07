@@ -36,6 +36,8 @@ class Produto
     {
         $dados = json_decode($input['dados']);
 
+        $this->removerUpload($id);
+
         $path = $this->uploadFoto($input['foto']);
 
         $produto = DB::update("update produtos set id_restaurante = '".$dados->id_restaurante."',id_categoria = '".$dados->id_categoria."',
@@ -105,6 +107,8 @@ class Produto
             return false;
         }
 
+        $this->removerUpload($id);
+
         return true;
     }
 
@@ -112,6 +116,13 @@ class Produto
     {
         $path = $arquivo->store('produtos','public');
         return $path;
+    }
+
+    public function removerUpload(int $id)
+    {
+        $data = $this->show($id);
+
+        Storage::disk('public')->delete($data[0]->foto);
     }
 }
 ?>
