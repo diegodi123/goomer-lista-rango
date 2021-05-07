@@ -6,17 +6,16 @@ API para gerenciamento de restaurante e produtos do restaurante.
 
 - Clonar o projeto
 ```bash
-git clone https://github.com/bandrade93/goomer-lista-rango.git
-cd goomer-lista-rango
+git clone https://github.com/bandrade93/goomer-lista-rango.git && cd goomer-lista-rango
 ```
 - Instalação de pacotes do composer:
 ```bash
-docker run --rm -v $(pwd)/goomer-lista-rango:/app composer:latest install
+docker run --rm -v $(pwd):/app composer:latest install
 ```
 
 - Instalação das dependencias
 ```bash
-composer (pasta vendor)
+composer update
 ```
 
 - Subir containers com o docker-compose (esse processo leva em média de 30 a 60 segundos depois do download das imagens)
@@ -29,7 +28,7 @@ docker-compose up -d
 cp .env.example .env
 ```
 
-- Make Laravel key;
+- Criar Laravel key
 ```bash
 php app artisan key:generate
 ```
@@ -46,7 +45,7 @@ php artisan db:seed
 
 - Instalação PHPUnit
 ```bash
-docker run --rm -it -v $(pwd)/goomer-lista-rango-:/app phpunit/phpunit:latest
+docker run --rm -it -v $(pwd):/app phpunit/phpunit:latest
 ```
 
 - Rodar testes unitários:
